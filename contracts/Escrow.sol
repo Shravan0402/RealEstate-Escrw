@@ -11,7 +11,6 @@ contract Escrow{
     enum inspectionStatusOptions{pending, done, fail}
 
     struct estate{
-        address nftAddress;
         uint256 nftID;
         address payable buyer;
         address payable seller;
@@ -33,9 +32,11 @@ contract Escrow{
     mapping(uint256 => approvals) public approval;
 
     address payable owner;
+    address nftAddress;
 
-    constructor(){
+    constructor(address _nftAddress){
         owner = payable(msg.sender);
+        nftAddress = _nftAddress;
     }
 
     modifier onlyBuyer(uint256 _nftID){
@@ -68,8 +69,8 @@ contract Escrow{
         }
     }
 
-    function new_estate(address _nftAddress, uint256 _nftID, address payable _buyer, address payable _inspector, address _lender, uint256 _purchaseAmount) public {
-        properties[_nftID] = estate(_nftAddress, _nftID, _buyer,payable(msg.sender),_inspector,_lender,_purchaseAmount, 0,inspectionStatusOptions.pending, false);
+    function new_estate(uint256 _nftID, address payable _buyer, address payable _inspector, address _lender, uint256 _purchaseAmount) public {
+        properties[_nftID] = estate( _nftID, _buyer,payable(msg.sender),_inspector,_lender,_purchaseAmount, 0,inspectionStatusOptions.pending, false);
         approval[_nftID] = approvals(false, false, false);
     }
 
@@ -101,7 +102,7 @@ contract Escrow{
         require(inspectorsuccess, "Payment failed");
         (bool ownersuccess, ) = payable(owner).call{value: properties[_nftID].processedAmount * 1/100}("");
         require(ownersuccess, "Payment failed");
-        IERC721(properties[_nftID].nftAddress).transferFrom(properties[_nftID].seller, properties[_nftID].buyer, properties[_nftID].nftID);
+        IERC721(nftAddress).transferFrom(properties[_nftID].seller, properties[_nftID].buyer, properties[_nftID].nftID);
         properties[_nftID].transactionStatus = true;
         properties[_nftID].processedAmount = 0;
     }

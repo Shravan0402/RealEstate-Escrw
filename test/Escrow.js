@@ -27,7 +27,7 @@ describe("Real Estate tests", ()=>{
         let transaction = await realestate.connect(seller).mint("Your property data link")
         await transaction.wait()
         EscrowContract = await ethers.getContractFactory("Escrow")
-        escrow = await EscrowContract.deploy()
+        escrow = await EscrowContract.deploy(realestate.address)
         transaction = await realestate.connect(seller).approve(escrow.address, nftID)
         await transaction.wait()
     })
@@ -35,7 +35,7 @@ describe("Real Estate tests", ()=>{
     describe('Transacting a property', async()=>{
 
         it("Transaction in progress", async()=>{
-            await escrow.connect(seller).new_estate(realestate.address, nftID, buyer.address, inspector.address, lender.address, purchaseAmount)
+            await escrow.connect(seller).new_estate(nftID, buyer.address, inspector.address, lender.address, purchaseAmount)
             
 
             // Paying the escrow amount to the contract
