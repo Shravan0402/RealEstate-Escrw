@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
 
+// This particular function will convert n into n ether values as EVM accepts values in WEI
 const tokens = (n) => {
   return ethers.utils.parseUnits(n.toString(), 'ether')
 }

@@ -1147,7 +1147,8 @@ abstract contract ERC721URIStorage is ERC721 {
     }
 }
 
-// File: contracts/s.sol
+
+// The REAL ESTATE SOLIDITY SMART CONTRACT TO MINT NEW TOKENS
 
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.2;
@@ -1157,12 +1158,11 @@ contract RealEstate is ERC721URIStorage  {
 using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    // https://rinkeby.etherscan.io/token/0x47d3d1e853ae4675c6d93e4b559572c2c0752125
-    // https://testnets.opensea.io/collection/real-estate-wmlf80cnw9
     constructor() ERC721("Real Estate", "REAL") {
-        mint("https://ipfs.io/ipfs/QmTudSYeM7mz3PkYEWXWqPjomRPHogcMFSq7XAvsvsgAPS");
+        mint("demo uri");
     }
 
+    // This mint function will mint new estate NFT with the given uri
     function mint(string memory tokenURI)
         public
         returns (uint256)
